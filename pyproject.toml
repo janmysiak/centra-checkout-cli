@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "centrac"
+version = "0.1.0"
+description = ""
+authors = ["janmysiak <jan.mysiak@noaignite.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+click = "^8.1"
+requests = "^2.31.0"
+
+[tool.poetry.scripts]
+centrac = "centrac:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
