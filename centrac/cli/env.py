@@ -25,30 +25,6 @@ def edit():
     utils.edit_file(constants.ENV_FILENAME)
 
 
-@env.command("secret")
-@click.argument("secret", required=True)
-def secret(secret):
-    """Set Checkout API secret"""
-
-    update_env("secret", secret)
-
-
-@env.command("token")
-@click.argument("token", required=True)
-def token(token):
-    """Set Checkout API token"""
-
-    update_env("token", token)
-
-
-@env.command("url")
-@click.argument("url", required=True)
-def url(url):
-    """Set Checkout API URL"""
-
-    update_env("url", url)
-
-
 @env.command("auto")
 @click.argument("filename", required=True, type=click.Path(exists=True))
 def auto(filename):
@@ -69,15 +45,40 @@ def auto(filename):
         raise Exception("Failed to locate secret in env file")
 
     # Attempt to find URL
-    url = [
-        line.strip().split("=")[1]
-        for line in lines
-        if re.search(r"CHECKOUT_API=", line)
-    ][0]
+    url = [line.strip().split("=")[1] for line in lines if re.search(r"CHECKOUT_API=", line)][0]
 
     if not url:
         raise Exception("Failed to locate URL field in env file")
 
     # Write to .env.json
     update_env("secret", secret)
+    update_env("url", url)
+
+
+@env.group("set")
+def set():
+    pass
+
+
+@set.command("secret")
+@click.argument("secret", required=True)
+def secret(secret):
+    """Set Checkout API secret"""
+
+    update_env("secret", secret)
+
+
+@set.command("token")
+@click.argument("token")
+def token(token=""):
+    """Set Checkout API token"""
+
+    update_env("token", token)
+
+
+@set.command("url")
+@click.argument("url", required=True)
+def url(url):
+    """Set Checkout API URL"""
+
     update_env("url", url)
